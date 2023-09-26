@@ -12,45 +12,46 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \Domain\Interfaces\CategoryRepository::class,
-            \App\Repositories\CategoryDatabaseRepository::class
-        );
-
-        $this->app
-            ->when(\App\Http\Controllers\GetAllCategoriesController::class)
-            ->needs(\Domain\UseCases\GetAllCategories\GetAllCategoriesInputPort::class)
-            ->give(function ($app) {
-                return $app->make(\Domain\UseCases\GetAllCategories\GetAllCategoriesInteractor::class, [
-                    'output' => $app->make(\App\Adapters\Presenters\GetAllCategoriesJsonPresenter::class)
-                ]);
-            });
-
-        $this->app->bind(
-            \Domain\Interfaces\ProductRepository::class,
-            \App\Repositories\ProductDatabaseRepository::class
+            \Domain\Interfaces\OrderRepository::class,
+            \App\Repositories\OrderDatabaseRepository::class
         );
 
         $this->app->bind(
-            \Domain\Interfaces\ProductFactory::class,
-            \App\Factories\ProductModelFactory::class
+            \Domain\Interfaces\OrderItemFactory::class,
+            \App\Factories\OrderItemModelFactory::class
+        );
+
+        $this->app->bind(
+            \Domain\Interfaces\OrderFactory::class,
+            \App\Factories\OrderModelFactory::class
         );
 
         $this->app
-            ->when(\App\Http\Controllers\CreateProductController::class)
-            ->needs(\Domain\UseCases\CreateProduct\CreateProductInputPort::class)
+            ->when(\App\Http\Controllers\GetOrdersController::class)
+            ->needs(\Domain\UseCases\GetOrders\GetOrdersInputPort::class)
             ->give(function ($app) {
-                return $app->make(\Domain\UseCases\CreateProduct\CreateProductInteractor::class, [
-                    'output' => $app->make(\App\Adapters\Presenters\CreateProductJsonPresenter::class),
-                    'messageOutput' => $app->make(\App\Adapters\Publishers\ProductCreatedMessagePublisher::class),
+                return $app->make(\Domain\UseCases\GetOrders\GetOrdersInteractor::class, [
+                    'output' => $app->make(\App\Adapters\Presenters\GetOrdersJsonPresenter::class)
+                ]);
+            });
+
+
+        $this->app
+            ->when(\App\Http\Controllers\CreateOrderController::class)
+            ->needs(\Domain\UseCases\CreateOrder\CreateOrderInputPort::class)
+            ->give(function ($app) {
+                return $app->make(\Domain\UseCases\CreateOrder\CreateOrderInteractor::class, [
+                    'output' => $app->make(\App\Adapters\Presenters\CreateOrderJsonPresenter::class),
+                    'messageOutput' => $app->make(\App\Adapters\Publishers\OrderCreatedMessagePublisher::class),
                 ]);
             });
 
         $this->app
-            ->when(\App\Http\Controllers\GetProductsController::class)
-            ->needs(\Domain\UseCases\GetProducts\GetProductsInputPort::class)
+            ->when(\App\Http\Controllers\UpdateOrderController::class)
+            ->needs(\Domain\UseCases\UpdateOrder\UpdateOrderInputPort::class)
             ->give(function ($app) {
-                return $app->make(\Domain\UseCases\GetProducts\GetProductsInteractor::class, [
-                    'output' => $app->make(\App\Adapters\Presenters\GetProductsJsonPresenter::class)
+                return $app->make(\Domain\UseCases\UpdateOrder\UpdateOrderInteractor::class, [
+                    'output' => $app->make(\App\Adapters\Presenters\UpdateOrderJsonPresenter::class)
                 ]);
             });
 
