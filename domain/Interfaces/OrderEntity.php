@@ -2,6 +2,7 @@
 
 namespace Domain\Interfaces;
 
+use Carbon\Carbon;
 use Domain\Enums\OrderStatus;
 use Domain\ValueObjects\MoneyValueObject;
 
@@ -22,4 +23,6 @@ interface OrderEntity
     public function setStatus(OrderStatus $status): void;
 
     public function getItems(): array;
+
+    public function getCreated(): Carbon;
 }

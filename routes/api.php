@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/orders', '\App\Http\Controllers\GetOrdersController');
 Route::post('/orders', '\App\Http\Controllers\CreateOrderController');
-//Route::patch('/orders', '\App\Http\Controllers\UpdateOrderController');
+Route::patch('/orders', '\App\Http\Controllers\UpdateOrderController');
 
 Route::group(['middleware' => ['auth:api', 'can:admin']], function() {
 

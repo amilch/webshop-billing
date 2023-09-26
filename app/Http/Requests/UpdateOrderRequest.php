@@ -22,7 +22,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sku' => 'required|integer',
+            'id' => 'required|integer',
             'status' => 'required|integer',
         ];
     }

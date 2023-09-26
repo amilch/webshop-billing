@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Domain\Enums\OrderStatus;
 use Domain\Interfaces\OrderEntity;
 use Domain\Interfaces\OrderItemEntity;
@@ -66,12 +67,17 @@ class Order extends Model implements OrderEntity
 
     public function setStatus(OrderStatus $status): void
     {
-        $this->attributes['status'] = $status;
+        $this->attributes['status'] = $status->value;
         $this->save();
     }
 
     public function getItems(): array
     {
         return $this->items()->get()->all();
+    }
+
+    public function getCreated(): Carbon
+    {
+        return $this->created_at;
     }
 }

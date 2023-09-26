@@ -2,11 +2,13 @@
 
 namespace Domain\UseCases\UpdateOrder;
 
+use Domain\Interfaces\OrderEntity;
+
 class UpdateOrderResponseModel
 {
-    public function __construct(private array $order) {}
+    public function __construct(private OrderEntity $order) {}
 
-    public function getOrder(): array
+    public function getOrder(): OrderEntity
     {
         return $this->order;
     }

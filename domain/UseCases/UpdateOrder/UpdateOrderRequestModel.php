@@ -2,6 +2,8 @@
 
 namespace Domain\UseCases\UpdateOrder;
 
+use Domain\Enums\OrderStatus;
+
 class UpdateOrderRequestModel
 {
     /**
@@ -17,8 +19,8 @@ class UpdateOrderRequestModel
         return $this->attributes['id'];
     }
 
-    public function getStatus(): int
+    public function getStatus(): OrderStatus
     {
-        return $this->attributes['status'];
+        return OrderStatus::from($this->attributes['status']);
     }
 }
