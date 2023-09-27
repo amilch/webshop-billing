@@ -23,7 +23,7 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'items' => 'required|array',
-            'total' => 'required|integer',
+            'total' => 'required|string',
             'shipping_address' => 'required|string',
             'payment_data' => 'required|string',
             'mail' => 'required|string',

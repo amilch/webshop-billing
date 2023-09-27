@@ -31,18 +31,19 @@ class CreateOrderInteractor implements CreateOrderInputPort
             ])
         ,$request->getItems());
 
+        $total = null;
         try{
             $shipping_cost = MoneyValueObject::fromInt(0);
             $total = $this->order_service->computeTotal($order_items);
+//            dd($request->getTotal());
         } catch(ProductsNotAvailableException $e) {
             return $this->output->unableToCreateOrder("Products not available anymore");
         }
 
-        if (! $total->isEqualTo(MoneyValueObject::fromInt($request->getTotal())))
+        if (! $total->isEqualTo(MoneyValueObject::fromString($request->getTotal())))
         {
             return $this->output->unableToCreateOrder("Price changed");
         }
-
 
         $order = $this->factory->make([
             'status' => OrderStatus::CREATED,

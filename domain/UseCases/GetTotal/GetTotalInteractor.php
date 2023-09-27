@@ -30,7 +30,7 @@ class GetTotalInteractor implements GetTotalInputPort
         $total = $this->order_service->computeTotal($order_items);
 
         return $this->output->total(
-            new GetTotalResponseModel($total->toInt())
+            new GetTotalResponseModel($total->toString())
         );
     }
 }

@@ -6,9 +6,9 @@ use Domain\Interfaces\OrderEntity;
 
 class GetTotalResponseModel
 {
-    public function __construct(private int $total) {}
+    public function __construct(private string $total) {}
 
-    public function getTotal(): int
+    public function getTotal(): string
     {
         return $this->total;
     }

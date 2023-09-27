@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TotalResource extends JsonResource
 {
     public function __construct(
-        protected int $total
+        protected string $total
     ) {}
 
     public function toArray($request)

@@ -11,6 +11,11 @@ class QueryPriceHttpService implements QueryPriceService
 
     public function pricesForProducts(array $skus): array
     {
+        if (sizeof($skus) == 0)
+        {
+            return [];
+        }
+
         $response = Http::withoutVerifying()
             ->withQueryParameters([
                 'sku' => join(',', $skus),

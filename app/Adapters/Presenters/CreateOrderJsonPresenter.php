@@ -21,7 +21,8 @@ class CreateOrderJsonPresenter implements CreateOrderOutputPort
     public function unableToCreateOrder(string $message): ViewModel
     {
         return new JsonResourceViewModel(
-            new UnableToCreateOrderResource($message)
+            new UnableToCreateOrderResource($message),
+            409,
         );
     }
 }

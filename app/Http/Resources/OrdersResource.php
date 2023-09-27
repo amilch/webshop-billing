@@ -17,7 +17,7 @@ class OrdersResource extends JsonResource
                 'id' => $order->id,
                 'created' => $order->getCreated()->toISOString(),
                 'status' => $order->getStatus()->value,
-                'shipping_cost' => $order->getShippingCost()->toInt(),
+                'shipping_cost' => $order->getShippingCost()->toString(),
                 'total' => $order->getTotal()->toString(),
                 'shipping_address' => $order->getShippingAddress(),
                 'payment_data' => $order->getPaymentData(),

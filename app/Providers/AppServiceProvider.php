@@ -61,7 +61,8 @@ class AppServiceProvider extends ServiceProvider
             ->needs(\Domain\UseCases\UpdateOrder\UpdateOrderInputPort::class)
             ->give(function ($app) {
                 return $app->make(\Domain\UseCases\UpdateOrder\UpdateOrderInteractor::class, [
-                    'output' => $app->make(\App\Adapters\Presenters\UpdateOrderJsonPresenter::class)
+                    'output' => $app->make(\App\Adapters\Presenters\UpdateOrderJsonPresenter::class),
+                    'messageOutput' => $app->make(\App\Adapters\Publishers\OrderUpdatedMessagePublisher::class),
                 ]);
             });
 

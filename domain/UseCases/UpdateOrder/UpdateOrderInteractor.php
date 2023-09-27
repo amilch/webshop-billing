@@ -8,8 +8,9 @@ use Domain\Interfaces\ViewModel;
 class UpdateOrderInteractor implements UpdateOrderInputPort
 {
     public function __construct(
-        private UpdateOrderOutputPort $output,
-        private OrderRepository       $repository,
+        private UpdateOrderOutputPort               $output,
+        private UpdateOrderMessageOutputPort $messageOutput,
+        private OrderRepository                 $repository,
     ) {}
 
     public function updateOrder(UpdateOrderRequestModel $request): ViewModel
@@ -19,6 +20,12 @@ class UpdateOrderInteractor implements UpdateOrderInputPort
         )[0];
 
         $order->setStatus($request->getStatus());
+
+        $message = new OrderUpdatedMessageModel([
+            'id' => $order->getId(),
+            'status' => $order->getStatus(),
+        ]);
+        $this->messageOutput->orderUpdated($message);
 
         return $this->output->order(
             new UpdateOrderResponseModel($order)

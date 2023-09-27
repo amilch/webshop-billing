@@ -22,7 +22,7 @@ class GetTotalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'items' => 'required|array',
+            'items' => 'present|array',
         ];
     }
 }
