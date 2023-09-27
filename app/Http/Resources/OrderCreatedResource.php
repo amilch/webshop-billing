@@ -15,11 +15,13 @@ class OrderCreatedResource extends JsonResource
     {
         return [
             'data' => [
+                'created' => $this->order->getCreated()->toISOString(),
                 'status' => $this->order->getStatus(),
                 'shipping_cost' => $this->order->getShippingCost()->toInt(),
                 'total' => $this->order->getTotal()->toInt(),
                 'shipping_address' => $this->order->getShippingAddress(),
                 'payment_data' => $this->order->getPaymentData(),
+                'mail' => $this->order->getMail(),
                 'items' => array_map(fn ($item) => [
                     'sku' => $item['sku'],
                     'quantity' => $item['quantity'],

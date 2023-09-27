@@ -26,6 +26,16 @@ class AppServiceProvider extends ServiceProvider
             \App\Factories\OrderModelFactory::class
         );
 
+        $this->app->bind(
+            \Domain\Interfaces\MessageQueueService::class,
+            \App\Services\RabbitMQService::class,
+        );
+
+        $this->app->bind(
+            \Domain\Interfaces\QueryPriceService::class,
+            \App\Services\QueryPriceHttpService::class,
+        );
+
         $this->app
             ->when(\App\Http\Controllers\GetOrdersController::class)
             ->needs(\Domain\UseCases\GetOrders\GetOrdersInputPort::class)
@@ -55,10 +65,14 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             });
 
-        $this->app->bind(
-            \Domain\Interfaces\MessageQueueService::class,
-            \App\Services\RabbitMQService::class,
-        );
+        $this->app
+            ->when(\App\Http\Controllers\GetTotalController::class)
+            ->needs(\Domain\UseCases\GetTotal\GetTotalInputPort::class)
+            ->give(function ($app) {
+                return $app->make(\Domain\UseCases\GetTotal\GetTotalInteractor::class, [
+                    'output' => $app->make(\App\Adapters\Presenters\GetTotalJsonPresenter::class)
+                ]);
+            });
     }
 
     /**

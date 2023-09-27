@@ -18,6 +18,7 @@ class OrderCreatedMessage implements RabbitMQMessage
     public function toArray(): array
     {
         return [
+            'id' => $this->message->getId(),
             'items' => array_map(fn ($item) => [
                 'sku' => $item['sku'],
                 'quantity' => $item['quantity'],

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateOrderRequest extends FormRequest
+class GetTotalRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,6 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'items' => 'required|array',
-            'total' => 'required|integer',
-            'shipping_address' => 'required|string',
-            'payment_data' => 'required|string',
-            'mail' => 'required|string',
         ];
     }
 }

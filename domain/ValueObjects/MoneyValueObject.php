@@ -8,7 +8,7 @@ class MoneyValueObject
 
     public static function fromString(string $value): self
     {
-        $split = explode('.', $value);
+        $split = explode(',', $value);
         return new self($split[0] * 100  +  $split[1]);
     }
 
@@ -35,5 +35,10 @@ class MoneyValueObject
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
+    }
+
+    public function add(self $other): self
+    {
+        return new self($this->value + $other->value);
     }
 }

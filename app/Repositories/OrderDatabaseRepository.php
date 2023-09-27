@@ -16,6 +16,7 @@ class OrderDatabaseRepository implements OrderRepository
             'total' => $order->getTotal()->toInt(),
             'shipping_address' => $order->getShippingAddress(),
             'payment_data' => $order->getPaymentData(),
+            'mail' => $order->getMail(),
         ]);
     }
 

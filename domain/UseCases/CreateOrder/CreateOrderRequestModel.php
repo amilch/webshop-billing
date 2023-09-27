@@ -30,4 +30,9 @@ class CreateOrderRequestModel
     {
         return $this->attributes['total'];
     }
+
+    public function getMail(): string
+    {
+        return $this->attributes['mail'];
+    }
 }

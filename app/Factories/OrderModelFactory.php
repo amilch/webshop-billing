@@ -17,6 +17,7 @@ class OrderModelFactory implements OrderFactory
             'total' => $attributes['total']->toInt(),
             'shipping_address' => $attributes['shipping_address'],
             'payment_data' => $attributes['payment_data'],
+            'mail' => $attributes['mail'],
         ]);
 
         return $order;

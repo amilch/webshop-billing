@@ -8,6 +8,8 @@ use Domain\ValueObjects\MoneyValueObject;
 
 interface OrderEntity
 {
+    public function getId(): int;
+
     public function getStatus(): OrderStatus;
 
     public function getShippingCost(): MoneyValueObject;
@@ -25,4 +27,6 @@ interface OrderEntity
     public function getItems(): array;
 
     public function getCreated(): Carbon;
+
+    public function getMail(): string;
 }

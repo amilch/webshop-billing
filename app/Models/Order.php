@@ -21,6 +21,7 @@ class Order extends Model implements OrderEntity
         'total',
         'shipping_address',
         'payment_data',
+        'mail',
     ];
 
     protected $casts = [
@@ -34,6 +35,11 @@ class Order extends Model implements OrderEntity
 
     // ---------------------------------------------------------------------
     // ProductEntity methods
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     public function getStatus(): OrderStatus
     {
@@ -79,5 +85,10 @@ class Order extends Model implements OrderEntity
     public function getCreated(): Carbon
     {
         return $this->created_at;
+    }
+
+    public function getMail(): string
+    {
+        return $this->attributes['mail'];
     }
 }

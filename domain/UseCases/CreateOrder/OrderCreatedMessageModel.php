@@ -14,4 +14,9 @@ class OrderCreatedMessageModel implements Message
     {
         return $this->attributes['items'];
     }
+
+    public function getId(): int
+    {
+        return $this->attributes['id'];
+    }
 }

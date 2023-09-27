@@ -3,10 +3,12 @@
 namespace Domain\UseCases\CreateOrder;
 
 use Domain\Enums\OrderStatus;
+use Domain\Exceptions\ProductsNotAvailableException;
 use Domain\Interfaces\OrderFactory;
 use Domain\Interfaces\OrderItemFactory;
 use Domain\Interfaces\OrderRepository;
 use Domain\Interfaces\ViewModel;
+use Domain\Services\OrderService;
 use Domain\ValueObjects\MoneyValueObject;
 
 class CreateOrderInteractor implements CreateOrderInputPort
@@ -17,6 +19,7 @@ class CreateOrderInteractor implements CreateOrderInputPort
         private OrderRepository              $repository,
         private OrderFactory                 $factory,
         private OrderItemFactory             $item_factory,
+        private OrderService                 $order_service,
     ) {}
 
     public function createOrder(CreateOrderRequestModel $request): ViewModel
@@ -28,8 +31,12 @@ class CreateOrderInteractor implements CreateOrderInputPort
             ])
         ,$request->getItems());
 
-        $shipping_cost = MoneyValueObject::fromInt(0);
-        $total = MoneyValueObject::fromInt(3000);
+        try{
+            $shipping_cost = MoneyValueObject::fromInt(0);
+            $total = $this->order_service->computeTotal($order_items);
+        } catch(ProductsNotAvailableException $e) {
+            return $this->output->unableToCreateOrder("Products not available anymore");
+        }
 
         if (! $total->isEqualTo(MoneyValueObject::fromInt($request->getTotal())))
         {
@@ -43,6 +50,7 @@ class CreateOrderInteractor implements CreateOrderInputPort
             'total' => $total,
             'shipping_address' => $request->getShippingAddress(),
             'payment_data' => $request->getPaymentData(),
+            'mail' => $request->getMail(),
         ]);
 
         $order = $this->repository->insert($order);
@@ -53,6 +61,7 @@ class CreateOrderInteractor implements CreateOrderInputPort
         }
 
         $message = new OrderCreatedMessageModel([
+            'id' => $order->getId(),
             'items' => array_map(fn ($order_item) => [
                 'sku' => $order_item->getSku(),
                 'quantity' => $order_item->getQuantity(),
