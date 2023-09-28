@@ -3,7 +3,6 @@
 namespace Domain\Services;
 
 use Domain\Exceptions\ProductsNotAvailableException;
-use Domain\Interfaces\OrderEntity;
 use Domain\Interfaces\QueryPriceService;
 use Domain\ValueObjects\MoneyValueObject;
 
