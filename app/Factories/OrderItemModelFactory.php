@@ -3,8 +3,8 @@
 namespace App\Factories;
 
 use App\Models\OrderItem;
-use Domain\Interfaces\OrderItemEntity;
-use Domain\Interfaces\OrderItemFactory;
+use Domain\Entities\OrderItem\OrderItemEntity;
+use Domain\Entities\OrderItem\OrderItemFactory;
 
 class OrderItemModelFactory implements OrderItemFactory
 {

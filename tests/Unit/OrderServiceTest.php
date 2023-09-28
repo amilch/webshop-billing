@@ -2,13 +2,12 @@
 
 namespace Tests\Unit;
 
+use Domain\Entities\OrderItem\OrderItemEntity;
 use Domain\Exceptions\ProductsNotAvailableException;
-use Domain\Interfaces\OrderItemEntity;
-use Domain\Interfaces\QueryPriceService;
 use Domain\Services\OrderService;
+use Domain\Services\QueryPriceService;
 use Domain\ValueObjects\MoneyValueObject;
 use Mockery;
-use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 class OrderServiceTest extends TestCase

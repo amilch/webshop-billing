@@ -12,27 +12,37 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \Domain\Interfaces\OrderRepository::class,
+            \Domain\Entities\Order\OrderRepository::class,
             \App\Repositories\OrderDatabaseRepository::class
         );
 
         $this->app->bind(
-            \Domain\Interfaces\OrderItemFactory::class,
+            \Domain\Entities\OrderItem\OrderItemFactory::class,
             \App\Factories\OrderItemModelFactory::class
         );
 
         $this->app->bind(
-            \Domain\Interfaces\OrderFactory::class,
+            \Domain\Entities\Order\OrderFactory::class,
             \App\Factories\OrderModelFactory::class
         );
 
         $this->app->bind(
-            \Domain\Interfaces\MessageQueueService::class,
-            \App\Services\RabbitMQService::class,
+            \Domain\Events\EventService::class,
+            \App\Services\AMQPService::class,
         );
 
         $this->app->bind(
-            \Domain\Interfaces\QueryPriceService::class,
+            \Domain\Events\OrderCreated\OrderCreatedEventFactory::class,
+            \App\Factories\OrderCreatedAMQPEventFactory::class,
+        );
+
+        $this->app->bind(
+            \Domain\Events\OrderUpdated\OrderUpdatedEventFactory::class,
+            \App\Factories\OrderUpdatedAMQPEventFactory::class,
+        );
+
+        $this->app->bind(
+            \Domain\Services\QueryPriceService::class,
             \App\Services\QueryPriceHttpService::class,
         );
 
@@ -52,7 +62,6 @@ class AppServiceProvider extends ServiceProvider
             ->give(function ($app) {
                 return $app->make(\Domain\UseCases\CreateOrder\CreateOrderInteractor::class, [
                     'output' => $app->make(\App\Adapters\Presenters\CreateOrderJsonPresenter::class),
-                    'messageOutput' => $app->make(\App\Adapters\Publishers\OrderCreatedMessagePublisher::class),
                 ]);
             });
 
@@ -62,7 +71,6 @@ class AppServiceProvider extends ServiceProvider
             ->give(function ($app) {
                 return $app->make(\Domain\UseCases\UpdateOrder\UpdateOrderInteractor::class, [
                     'output' => $app->make(\App\Adapters\Presenters\UpdateOrderJsonPresenter::class),
-                    'messageOutput' => $app->make(\App\Adapters\Publishers\OrderUpdatedMessagePublisher::class),
                 ]);
             });
 

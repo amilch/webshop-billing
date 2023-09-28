@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Order;
-use Domain\Interfaces\OrderEntity;
-use Domain\Interfaces\OrderRepository;
+use Domain\Entities\Order\OrderEntity;
+use Domain\Entities\Order\OrderRepository;
 
 class OrderDatabaseRepository implements OrderRepository
 {

@@ -1,8 +1,9 @@
 <?php
 
-namespace Domain\Interfaces;
+namespace Domain\Entities\Order;
 
 use Carbon\Carbon;
+use Domain\Entities\OrderItem\OrderItemEntity;
 use Domain\Enums\OrderStatus;
 use Domain\ValueObjects\MoneyValueObject;
 

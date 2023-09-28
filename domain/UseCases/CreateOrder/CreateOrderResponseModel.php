@@ -2,7 +2,7 @@
 
 namespace Domain\UseCases\CreateOrder;
 
-use Domain\Interfaces\OrderEntity;
+use Domain\Entities\Order\OrderEntity;
 
 class CreateOrderResponseModel
 {

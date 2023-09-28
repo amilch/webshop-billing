@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use Domain\Interfaces\OrderItemEntity;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Domain\Entities\OrderItem\OrderItemEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderItem extends Model implements OrderItemEntity
 {

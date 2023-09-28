@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Interfaces;
+namespace Domain\Services;
 
 interface QueryPriceService
 {

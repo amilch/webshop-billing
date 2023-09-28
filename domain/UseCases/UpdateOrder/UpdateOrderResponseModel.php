@@ -2,7 +2,7 @@
 
 namespace Domain\UseCases\UpdateOrder;
 
-use Domain\Interfaces\OrderEntity;
+use Domain\Entities\Order\OrderEntity;
 
 class UpdateOrderResponseModel
 {

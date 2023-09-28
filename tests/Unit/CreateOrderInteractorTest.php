@@ -2,18 +2,20 @@
 
 namespace Tests\Unit;
 
-use Domain\Interfaces\OrderFactory;
-use Domain\Interfaces\OrderItemEntity;
-use Domain\Interfaces\OrderItemFactory;
-use Domain\Interfaces\OrderRepository;
+use Domain\Entities\Order\OrderEntity;
+use Domain\Entities\Order\OrderFactory;
+use Domain\Entities\Order\OrderRepository;
+use Domain\Entities\OrderItem\OrderItemEntity;
+use Domain\Entities\OrderItem\OrderItemFactory;
+use Domain\Enums\OrderStatus;
+use Domain\Events\EventService;
+use Domain\Events\OrderCreated\OrderCreatedEventFactory;
 use Domain\Services\OrderService;
 use Domain\UseCases\CreateOrder\CreateOrderInteractor;
 use Domain\UseCases\CreateOrder\CreateOrderMessageOutputPort;
 use Domain\UseCases\CreateOrder\CreateOrderOutputPort;
 use Domain\UseCases\CreateOrder\CreateOrderRequestModel;
 use Domain\ValueObjects\MoneyValueObject;
-use Domain\Enums\OrderStatus;
-use Domain\Interfaces\OrderEntity;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -35,8 +37,13 @@ class CreateOrderInteractorTest extends TestCase
 
         $output = Mockery::mock(CreateOrderOutputPort::class);
         $output->shouldReceive('orderCreated')->once();
-        $message_output = Mockery::mock(CreateOrderMessageOutputPort::class);
-        $message_output->shouldReceive('orderCreated')->once();
+
+        $event_service = Mockery::mock(EventService::class);
+        $event_service->shouldReceive('publish')->once();
+
+        $event_factory = Mockery::mock(OrderCreatedEventFactory::class);
+        $event_factory->shouldReceive('make')->once();
+
         $repository = Mockery::Mock(OrderRepository::class);
         $repository->shouldReceive('insert')
             ->with($order)->once()->andReturn($order)->once();
@@ -63,11 +70,12 @@ class CreateOrderInteractorTest extends TestCase
 
         $interactor = new CreateOrderInteractor(
             $output,
-            $message_output,
             $repository,
             $factory,
             $item_factory,
             $order_service,
+            $event_service,
+            $event_factory
         );
 
         $interactor->createOrder(new CreateOrderRequestModel([
@@ -91,12 +99,16 @@ class CreateOrderInteractorTest extends TestCase
 
         $output = Mockery::mock(CreateOrderOutputPort::class);
         $output->shouldReceive('unableToCreateOrder')->once();
-        $message_output = Mockery::mock(CreateOrderMessageOutputPort::class);
-        $message_output->shouldReceive('orderCreated')->never();
         $repository = Mockery::Mock(OrderRepository::class);
         $repository->shouldReceive('insert')->never();
         $factory = Mockery::Mock(OrderFactory::class);
         $factory->shouldReceive('make')->never();
+
+        $event_service = Mockery::mock(EventService::class);
+        $event_service->shouldReceive('publish')->never();
+
+        $event_factory = Mockery::mock(OrderCreatedEventFactory::class);
+        $event_factory->shouldReceive('make')->never();
 
         $item_factory = Mockery::Mock(OrderItemFactory::class);
         $item_factory
@@ -110,11 +122,12 @@ class CreateOrderInteractorTest extends TestCase
 
         $interactor = new CreateOrderInteractor(
             $output,
-            $message_output,
             $repository,
             $factory,
             $item_factory,
             $order_service,
+            $event_service,
+            $event_factory
         );
 
         $view_model = $interactor->createOrder(new CreateOrderRequestModel([

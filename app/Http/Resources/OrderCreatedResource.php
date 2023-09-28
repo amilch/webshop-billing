@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use Domain\Interfaces\OrderEntity;
+use Domain\Entities\Order\OrderEntity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderCreatedResource extends JsonResource

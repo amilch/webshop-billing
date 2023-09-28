@@ -2,10 +2,9 @@
 
 namespace App\Factories;
 
-use App\Models\OrderItem;
 use App\Models\Order;
-use Domain\Interfaces\OrderEntity;
-use Domain\Interfaces\OrderFactory;
+use Domain\Entities\Order\OrderEntity;
+use Domain\Entities\Order\OrderFactory;
 
 class OrderModelFactory implements OrderFactory
 {

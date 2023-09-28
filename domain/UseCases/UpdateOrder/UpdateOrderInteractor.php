@@ -2,15 +2,19 @@
 
 namespace Domain\UseCases\UpdateOrder;
 
-use Domain\Interfaces\OrderRepository;
+use Domain\Entities\Order\OrderRepository;
+use Domain\Events\EventService;
+use Domain\Events\OrderUpdated\OrderUpdatedEvent;
+use Domain\Events\OrderUpdated\OrderUpdatedEventFactory;
 use Domain\Interfaces\ViewModel;
 
 class UpdateOrderInteractor implements UpdateOrderInputPort
 {
     public function __construct(
         private UpdateOrderOutputPort               $output,
-        private UpdateOrderMessageOutputPort $messageOutput,
         private OrderRepository                 $repository,
+        private EventService                    $eventService,
+        private OrderUpdatedEventFactory        $eventFactory,
     ) {}
 
     public function updateOrder(UpdateOrderRequestModel $request): ViewModel
@@ -21,11 +25,8 @@ class UpdateOrderInteractor implements UpdateOrderInputPort
 
         $order->setStatus($request->getStatus());
 
-        $message = new OrderUpdatedMessageModel([
-            'id' => $order->getId(),
-            'status' => $order->getStatus(),
-        ]);
-        $this->messageOutput->orderUpdated($message);
+        $event = $this->eventFactory->make($order->getId(), $order->getStatus());
+        $this->eventService->publish($event);
 
         return $this->output->order(
             new UpdateOrderResponseModel($order)

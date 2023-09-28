@@ -2,13 +2,9 @@
 
 namespace Domain\UseCases\GetTotal;
 
-use Domain\Enums\OrderStatus;
-use Domain\Interfaces\OrderFactory;
-use Domain\Interfaces\OrderItemFactory;
-use Domain\Interfaces\OrderRepository;
+use Domain\Entities\OrderItem\OrderItemFactory;
 use Domain\Interfaces\ViewModel;
 use Domain\Services\OrderService;
-use Domain\ValueObjects\MoneyValueObject;
 
 class GetTotalInteractor implements GetTotalInputPort
 {

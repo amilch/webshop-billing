@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Order;
-use App\Services\RabbitMQService;
+use App\Services\AMQPService;
 use Bschmitt\Amqp\Facades\Amqp;
 use Domain\Enums\OrderStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +21,7 @@ class UpdateOrderTest extends TestCase
 
     public function test_should_update_order_with_new_status(): void
     {
-        $this->mock(RabbitMQService::class, fn (MockInterface $mock) => $mock
+        $this->mock(AMQPService::class, fn (MockInterface $mock) => $mock
             ->shouldReceive('publish')->once()
         );
 

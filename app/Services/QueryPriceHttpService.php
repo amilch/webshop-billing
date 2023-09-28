@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Domain\Interfaces\QueryPriceService;
+use Domain\Services\QueryPriceService;
 use Domain\ValueObjects\MoneyValueObject;
 use Illuminate\Support\Facades\Http;
 

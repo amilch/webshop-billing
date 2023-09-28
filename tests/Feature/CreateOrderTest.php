@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Order;
-use App\Services\RabbitMQService;
+use App\Services\AMQPService;
 use Domain\ValueObjects\MoneyValueObject;
 use Illuminate\Http\Client\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,7 +45,7 @@ class CreateOrderTest extends TestCase
 
     public function test_should_return_error_when_total_price_mismatch(): void
     {
-        $this->mock(RabbitMQService::class, fn (MockInterface $mock) => $mock
+        $this->mock(AMQPService::class, fn (MockInterface $mock) => $mock
             ->shouldReceive('publish')->never()
         );
 
@@ -74,7 +74,7 @@ class CreateOrderTest extends TestCase
 
     public function test_should_create_order_when_price_matches(): void
     {
-        $this->mock(RabbitMQService::class, fn (MockInterface $mock) => $mock
+        $this->mock(AMQPService::class, fn (MockInterface $mock) => $mock
             ->shouldReceive('publish')->once()
         );
 

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Domain\Entities\Order\OrderEntity;
+use Domain\Entities\OrderItem\OrderItemEntity;
 use Domain\Enums\OrderStatus;
-use Domain\Interfaces\OrderEntity;
-use Domain\Interfaces\OrderItemEntity;
 use Domain\ValueObjects\MoneyValueObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

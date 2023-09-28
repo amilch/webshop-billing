@@ -2,11 +2,14 @@
 
 namespace Domain\UseCases\CreateOrder;
 
+use Domain\Entities\Order\OrderFactory;
+use Domain\Entities\Order\OrderRepository;
+use Domain\Entities\OrderItem\OrderItemFactory;
 use Domain\Enums\OrderStatus;
+use Domain\Events\EventService;
+use Domain\Events\OrderCreated\OrderCreatedEvent;
+use Domain\Events\OrderCreated\OrderCreatedEventFactory;
 use Domain\Exceptions\ProductsNotAvailableException;
-use Domain\Interfaces\OrderFactory;
-use Domain\Interfaces\OrderItemFactory;
-use Domain\Interfaces\OrderRepository;
 use Domain\Interfaces\ViewModel;
 use Domain\Services\OrderService;
 use Domain\ValueObjects\MoneyValueObject;
@@ -15,11 +18,12 @@ class CreateOrderInteractor implements CreateOrderInputPort
 {
     public function __construct(
         private CreateOrderOutputPort        $output,
-        private CreateOrderMessageOutputPort $messageOutput,
         private OrderRepository              $repository,
         private OrderFactory                 $factory,
         private OrderItemFactory             $item_factory,
         private OrderService                 $order_service,
+        private EventService                 $eventService,
+        private OrderCreatedEventFactory     $eventFactory,
     ) {}
 
     public function createOrder(CreateOrderRequestModel $request): ViewModel
@@ -60,14 +64,11 @@ class CreateOrderInteractor implements CreateOrderInputPort
             $order->add($order_item);
         }
 
-        $message = new OrderCreatedMessageModel([
-            'id' => $order->getId(),
-            'items' => array_map(fn ($order_item) => [
+        $event = $this->eventFactory->make($order->getId(),array_map(fn ($order_item) => [
                 'sku' => $order_item->getSku(),
                 'quantity' => $order_item->getQuantity(),
-            ] ,$order_items)
-        ]);
-        $this->messageOutput->orderCreated($message);
+            ] ,$order_items));
+        $this->eventService->publish($event);
 
         return $this->output->orderCreated(
             new CreateOrderResponseModel($order)

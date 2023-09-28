@@ -2,8 +2,8 @@
 
 namespace Domain\UseCases\GetOrders;
 
+use Domain\Entities\Order\OrderRepository;
 use Domain\Interfaces\CategoryRepository;
-use Domain\Interfaces\OrderRepository;
 use Domain\Interfaces\ViewModel;
 
 class GetOrdersInteractor implements GetOrdersInputPort
