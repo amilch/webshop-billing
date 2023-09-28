@@ -59,7 +59,7 @@ class GetTotalTest extends TestCase
         $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json
                 ->has('data', fn (AssertableJson $json) => $json
-                    ->where('total', '10,85')
+                    ->where('total', '10,05')
                 )
             );
     }

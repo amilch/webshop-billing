@@ -20,8 +20,8 @@ class OrdersTableSeeder extends Seeder
             'status' => 0,
             'shipping_cost' => 0,
             'total' => 418,
-            'shipping_address' => 'address',
-            'payment_data' => 'payment_data',
+            'shipping_address' => '{"first_name":"Leo","last_name":"Doe","street_nr":"Straße der Pariser Kommune 123","plz":"10299","city":"Berlin"}',
+            'payment_data' => '{"first_name":"Leo","last_name":"Doe","iban":"DE75512108001245126199"}',
             'created_at' => $now,
             'updated_at' => $now,
         ]);
