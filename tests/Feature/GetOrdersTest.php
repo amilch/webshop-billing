@@ -43,7 +43,7 @@ class GetOrdersTest extends TestCase
 
     public function test_returns_empty_if_no_orders(): void
     {
-        Order::truncate();
+        Order::all()->map->delete();
 
         $response = $this->getJson('/orders');
 

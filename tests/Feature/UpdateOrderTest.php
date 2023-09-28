@@ -25,10 +25,10 @@ class UpdateOrderTest extends TestCase
             ->shouldReceive('publish')->once()
         );
 
-        $this->assertEquals(OrderStatus::CREATED, Order::where('id', 0)->first()->getStatus());
+        $this->assertEquals(OrderStatus::CREATED, Order::where('id', 1)->first()->getStatus());
 
         $response = $this->patchJson('/orders/',[
-            'id' => 0,
+            'id' => 1,
             'status' => OrderStatus::PAYMENT_CONFIRMED,
         ]);
         $response
@@ -40,7 +40,7 @@ class UpdateOrderTest extends TestCase
                 )
             );
 
-        $this->assertEquals(OrderStatus::PAYMENT_CONFIRMED, Order::where('id', 0)->first()->getStatus());
+        $this->assertEquals(OrderStatus::PAYMENT_CONFIRMED, Order::where('id', 1)->first()->getStatus());
     }
 
     public function test_order_update_should_publish_message(): void
@@ -49,13 +49,13 @@ class UpdateOrderTest extends TestCase
             ->once()
             ->withArgs([
                 'order_updated',
-                '{"id":0,"status":1}'
+                '{"id":1,"status":1}'
             ]);
 
-        $this->assertEquals(OrderStatus::CREATED, Order::where('id', 0)->first()->getStatus());
+        $this->assertEquals(OrderStatus::CREATED, Order::where('id', 1)->first()->getStatus());
 
         $response = $this->patchJson('/orders/',[
-            'id' => 0,
+            'id' => 1,
             'status' => 1,
         ]);
         $response->assertStatus(200);

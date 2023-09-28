@@ -15,7 +15,6 @@ class OrdersTableSeeder extends Seeder
         $now = '2023-09-27 16:12:21';
 
         DB::table('orders')->insert([
-            'id' => 0,
             'mail' => 'mail@webshop.local',
             'status' => 0,
             'shipping_cost' => 0,
