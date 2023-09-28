@@ -14,12 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/orders', '\App\Http\Controllers\GetOrdersController');
 Route::post('/orders', '\App\Http\Controllers\CreateOrderController');
-Route::patch('/orders', '\App\Http\Controllers\UpdateOrderController');
 Route::post('/total', '\App\Http\Controllers\GetTotalController');
 
 Route::group(['middleware' => ['auth:api', 'can:admin']], function() {
-
+    Route::get('/orders', '\App\Http\Controllers\GetOrdersController');
+    Route::patch('/orders', '\App\Http\Controllers\UpdateOrderController');
 });
-
