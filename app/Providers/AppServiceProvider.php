@@ -46,6 +46,11 @@ class AppServiceProvider extends ServiceProvider
             \App\Services\QueryPriceHttpService::class,
         );
 
+        $this->app->bind(
+            \Domain\Services\ReserveItemsService::class,
+            \App\Services\ReserveItemsHttpService::class
+        );
+
         $this->app
             ->when(\App\Http\Controllers\GetOrdersController::class)
             ->needs(\Domain\UseCases\GetOrders\GetOrdersInputPort::class)

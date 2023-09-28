@@ -11,6 +11,7 @@ use Domain\Enums\OrderStatus;
 use Domain\Events\EventService;
 use Domain\Events\OrderCreated\OrderCreatedEventFactory;
 use Domain\Services\OrderService;
+use Domain\Services\ReserveItemsService;
 use Domain\UseCases\CreateOrder\CreateOrderInteractor;
 use Domain\UseCases\CreateOrder\CreateOrderMessageOutputPort;
 use Domain\UseCases\CreateOrder\CreateOrderOutputPort;
@@ -68,6 +69,10 @@ class CreateOrderInteractorTest extends TestCase
             ->with([$item])
             ->andReturn(MoneyValueObject::fromInt(230));
 
+        $reserve_service = Mockery::Mock(ReserveItemsService::class);
+        $reserve_service->shouldReceive('reserveItems')
+            ->once()->andReturn(true);
+
         $interactor = new CreateOrderInteractor(
             $output,
             $repository,
@@ -75,7 +80,8 @@ class CreateOrderInteractorTest extends TestCase
             $item_factory,
             $order_service,
             $event_service,
-            $event_factory
+            $event_factory,
+            $reserve_service
         );
 
         $interactor->createOrder(new CreateOrderRequestModel([
@@ -120,6 +126,9 @@ class CreateOrderInteractorTest extends TestCase
             ->with([$item])
             ->andReturn(MoneyValueObject::fromInt(1));
 
+        $reserve_service = Mockery::Mock(ReserveItemsService::class);
+        $reserve_service->shouldReceive('reserveItems')->never();
+
         $interactor = new CreateOrderInteractor(
             $output,
             $repository,
@@ -127,7 +136,8 @@ class CreateOrderInteractorTest extends TestCase
             $item_factory,
             $order_service,
             $event_service,
-            $event_factory
+            $event_factory,
+            $reserve_service
         );
 
         $view_model = $interactor->createOrder(new CreateOrderRequestModel([

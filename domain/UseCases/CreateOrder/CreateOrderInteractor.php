@@ -12,6 +12,7 @@ use Domain\Events\OrderCreated\OrderCreatedEventFactory;
 use Domain\Exceptions\ProductsNotAvailableException;
 use Domain\Interfaces\ViewModel;
 use Domain\Services\OrderService;
+use Domain\Services\ReserveItemsService;
 use Domain\ValueObjects\MoneyValueObject;
 
 class CreateOrderInteractor implements CreateOrderInputPort
@@ -24,6 +25,7 @@ class CreateOrderInteractor implements CreateOrderInputPort
         private OrderService                 $order_service,
         private EventService                 $eventService,
         private OrderCreatedEventFactory     $eventFactory,
+        private ReserveItemsService         $reserveItemsService,
     ) {}
 
     public function createOrder(CreateOrderRequestModel $request): ViewModel
@@ -46,6 +48,12 @@ class CreateOrderInteractor implements CreateOrderInputPort
         if (! $total->isEqualTo(MoneyValueObject::fromString($request->getTotal())))
         {
             return $this->output->unableToCreateOrder("Price changed");
+        }
+
+        $reserving_successful = $this->reserveItemsService->reserveItems($order_items);
+        if (! $reserving_successful)
+        {
+            return $this->output->unableToCreateOrder("Could not reserve items");
         }
 
         $order = $this->factory->make([
