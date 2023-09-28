@@ -22,9 +22,18 @@ class QueryPriceHttpService implements QueryPriceService
             ])
             ->get('catalog:8000/products');
         $products = $response->json()['data'];
-        $prices = array_map(
-            fn ($product) => MoneyValueObject::fromString($product['price']),
-            $products);
+
+        $pricesBySku = [];
+        foreach ($products as $product)
+        {
+            $pricesBySku[$product['sku']] = MoneyValueObject::fromString($product['price']);
+        }
+
+        $prices = [];
+        foreach ($skus as $sku)
+        {
+            array_push($prices, $pricesBySku[$sku]);
+        }
         return $prices;
     }
 }

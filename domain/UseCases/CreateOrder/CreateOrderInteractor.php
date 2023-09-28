@@ -35,7 +35,6 @@ class CreateOrderInteractor implements CreateOrderInputPort
         try{
             $shipping_cost = MoneyValueObject::fromInt(0);
             $total = $this->order_service->computeTotal($order_items);
-//            dd($request->getTotal());
         } catch(ProductsNotAvailableException $e) {
             return $this->output->unableToCreateOrder("Products not available anymore");
         }
