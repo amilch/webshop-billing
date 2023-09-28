@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Order;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -14,6 +15,9 @@ class GetOrdersTest extends TestCase
 {
     use RefreshDatabase;
     protected $seed = true;
+
+    use WithoutMiddleware;
+
     public function test_can_return_all_orders(): void
     {
         $response = $this->getJson('/orders');

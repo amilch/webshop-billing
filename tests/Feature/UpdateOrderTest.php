@@ -7,6 +7,7 @@ use App\Services\RabbitMQService;
 use Bschmitt\Amqp\Facades\Amqp;
 use Domain\Enums\OrderStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Mockery\MockInterface;
 use Tests\TestCase;
@@ -15,6 +16,8 @@ class UpdateOrderTest extends TestCase
 {
     use RefreshDatabase;
     protected $seed = true;
+
+    use WithoutMiddleware;
 
     public function test_should_update_order_with_new_status(): void
     {
